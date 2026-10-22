@@ -24,3 +24,5 @@ The target repository is the one in the `HARNESS_REPO` environment variable (`ow
 - `/next-task`: pick the oldest `ai-task` issue, load the context, and propose a plan.
 - `/ship <issue>`: implement the plan on a harness branch, open the PR, and report on the issue.
 - `/sync-context`: review `.harness/context.md` against recent merged PRs and propose updates via a PR.
+
+The same workflows also exist as skills in `.claude/skills/`: `harness-next-task`, `harness-ship` and `harness-sync-context`. Keep each skill in step with its command.

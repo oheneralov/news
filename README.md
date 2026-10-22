@@ -10,7 +10,7 @@ GitHub is still the system of record, reached only through the official GitHub M
 | `.claude/settings.json` | Permission rules:<br>- reads are allowed<br>- writes ask first<br>- merge and delete are denied<br>It also registers the policy hook. |
 | `.claude/hooks/guard_branch.py` | PreToolUse hook. Restricts calls to `HARNESS_REPO` only, limits writes to `harness/*` branches, and allows label-only issue updates. It mirrors `harness_core.guard`. |
 | `.claude/commands/` | `/next-task`, `/ship <issue>`, `/sync-context` |
-| `.claude/skills/` | `harness-next-task`, `harness-ship`, `harness-sync-context` (the same workflows as the commands), and `git-push-all` (see below). |
+| `.claude/skills/` | The same workflows as skills: `/harness-next-task`, `/harness-ship <issue>`, `/harness-sync-context`. They use a `harness-` prefix because a skill with the same name as a command would shadow it. Also `/git-push-all` (see below). |
 | `.harness/context.md` | Durable knowledge the harness keeps current. |
 
 ## GitHub PAT
