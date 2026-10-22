@@ -10,6 +10,8 @@ GitHub is still the system of record, reached only through the official GitHub M
 | `.claude/settings.json` | Permission rules:<br>- reads are allowed<br>- writes ask first<br>- merge and delete are denied<br>It also registers the policy hook. |
 | `.claude/hooks/guard_branch.py` | PreToolUse hook. Restricts calls to `HARNESS_REPO` only, limits writes to `harness/*` branches, and allows label-only issue updates. It mirrors `harness_core.guard`. |
 | `.claude/commands/` | `/next-task`, `/ship <issue>`, `/sync-context` |
+| `.claude/skills/` | `harness-next-task`, `harness-ship`, `harness-sync-context` (the same workflows as the commands), and `git-push-all` (see below). |
+| `.harness/context.md` | Durable knowledge the harness keeps current. |
 
 ## GitHub PAT
 
@@ -82,6 +84,20 @@ and each write is a commit made directly on GitHub:
 Every write tool is in the `ask` list, so Claude Code asks you to approve each call. The hook
 blocks writes to any branch that does not start with `harness/` (override with
 `HARNESS_BRANCH_PREFIX`), and the deny rules block merging and deleting. A human merges the PR.
+
+### Pushing a local checkout with `/git-push-all`
+
+`/git-push-all [commit message]` is separate from the MCP flow. It works on a local git checkout,
+such as your clone of this harness, and runs `git add -A`, `git commit` and `git push` in one step:
+
+```text
+> /git-push-all Update troubleshooting table
+```
+
+If you leave out the message, Claude writes one from the staged diff. It lists the files first,
+asks before staging anything that looks like a secret or committing on `main`/`master`, and never
+force-pushes or skips hooks. Copy `.claude/settings.local.example.json` to
+`.claude/settings.local.json` to allow the git commands without a prompt each time.
 
 ### Example 1: ship an issue end to end
 
